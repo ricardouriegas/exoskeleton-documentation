@@ -41,20 +41,20 @@
 \end{romanpages}            % end roman page numbering
 
 %now include the files of latex for each of the chapters etc
-\include{chapter1}
-\include{chapter2}
-\include{conclusions}
+\include{chapters/introduction}
+% \include{chapter2}
+% \include{conclusions}
 
 %now enable appendix numbering format and include any appendices
 \appendix
-\include{appendix1}
-\include{appendix2}
+% \include{appendix1}
+% \include{appendix2}
 
 %next line adds the Bibliography to the contents page
 \addcontentsline{toc}{chapter}{Bibliography}
-%uncomment next line to change bibliography name to references
-%\renewcommand{\bibname}{References}
-\bibliography{refs}        %use a bibtex bibliography file refs.bib
+
+\nocite{*} % include everything in the bib file
+\bibliography{bibliography}
 \bibliographystyle{plain}  %use the plain bibliography style
 
 \end{document}

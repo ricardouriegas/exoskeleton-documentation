@@ -4,6 +4,7 @@
 *.blg
 *.brf
 *.log
+*.lof
 *.nav
 *.out
 *.snm

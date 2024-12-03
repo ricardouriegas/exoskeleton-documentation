@@ -1,61 +1,76 @@
-\chapter{Marco teórico y estado del arte}
+\chapter{Marco Teórico y Estado del Arte}
 
-\section{Marco teórico}
-El marco teórico proporciona la base conceptual que respalda el desarrollo de este proyecto. La idea del exoesqueleto inspirado en una grúa requiere integrar conceptos de mecánica, ergonomía, biomecánica e inteligencia artificial, los cuales se detallan a continuación:
+\section{Marco Teórico}
 
-\subsection{Mecánica estructural}
-La mecánica estructural estudia el comportamiento de estructuras sometidas a diferentes fuerzas. En este caso, se aplican principios de sistemas de grúas ligeras para garantizar que el exoesqueleto soporte las cargas propuestas sin comprometer su peso ni movilidad \cite{smith2019structuraldesign, lee2020lightweightsystems}.
-
-\subsection{Ergonomía y corrección postural}
-La ergonomía analiza las interacciones entre los usuarios y su entorno, orientándose a reducir lesiones y mejorar el rendimiento. Este proyecto incorpora una faja ergonómica para promover una postura adecuada, mitigando el esfuerzo físico en la región lumbar \cite{brown2022ergonomics, liu2023posturalstudy}.
-
-\subsection{Inteligencia artificial y visión por computadora}
-El uso de inteligencia artificial permite detectar herramientas en tiempo real mediante visión por computadora. Esto asegura que el exoesqueleto identifique, tome y manipule las herramientas sin intervención directa del usuario \cite{redmon2018yolo, patel2021tooldetection}.
-
-\subsection{Materiales y diseño ligero}
-El diseño del dispositivo requiere materiales con una alta relación resistencia-peso, como aleaciones ligeras y polímeros reforzados, para garantizar que el exoesqueleto sea cómodo y funcional \cite{choi2020carbonfiber, park2019lightweight, nguyen2020visionrobotics}.
-
-\section{Estado del arte}
-El estado del arte de este proyecto abarca los avances recientes en áreas relacionadas con el diseño de exoesqueletos, manejo ergonómico de cargas, tecnologías de visión por computadora, y materiales ligeros. Este análisis se enfoca en investigaciones realizadas en los últimos cinco años, ampliando el rango temporal si es necesario.
-
-\subsection{Exoesqueletos industriales y aplicaciones laborales}
-En los últimos años, los exoesqueletos han evolucionado significativamente para abordar necesidades específicas en aplicaciones laborales. Los desarrollos incluyen tanto exoesqueletos activos como pasivos:
+\subsection{Antecedentes}
+Los exoesqueletos han evolucionado significativamente, destacándose en tres áreas principales:
 \begin{itemize}
-    \item \textbf{Exoesqueletos activos}: Estos utilizan actuadores motorizados para proporcionar asistencia. Ejemplos recientes incluyen el \textit{EksoVest} \cite{garcia2020integratedai} y el \textit{Comau MATE}, diseñados para tareas repetitivas y pesadas \cite{ramirez2021specifictasks}.
-    \item \textbf{Exoesqueletos pasivos}: Sistemas como el \textit{HeroWear Apex} emplean estructuras mecánicas que no requieren energía externa, mejorando la accesibilidad por su costo reducido \cite{smith2021ergonomic, gomez2022hybridsystems}.
+    \item \textbf{Industria:} Uso para tareas repetitivas y soporte físico en fábricas.
+    \item \textbf{Medicina:} Rehabilitación de pacientes con movilidad reducida.
+    \item \textbf{Militar:} Incremento en la fuerza y resistencia de los soldados.
 \end{itemize}
 
-Estudios recientes como los de \cite{kim2018overview, johnson2018biomechanics} destacan la adopción de exoesqueletos en la industria de la construcción para mitigar el esfuerzo físico en trabajadores, aunque existe un vacío en dispositivos diseñados para manipular herramientas ligeras.
+Dispositivos como el \textit{EksoVest} y el \textit{ReWalk} han servido como pioneros. Estudios iniciales en grúas mecánicas establecieron bases biomecánicas utilizadas en exoesqueletos actuales, enfatizando la redistribución de peso y eficiencia estructural.
 
-\subsection{Corrección postural y ergonomía}
-La corrección postural es un componente clave para prevenir lesiones. Investigaciones recientes han explorado tecnologías portátiles para este propósito \cite{liu2023posturalstudy, choi2020carbonfiber}:
+\subsection{Teoría}
+La investigación de exoesqueletos se fundamenta en:
 \begin{itemize}
-    \item \textbf{Fajas ergonómicas inteligentes}: Incorporan sensores para monitorear la postura y emitir alertas si se detectan posiciones incorrectas \cite{brown2022ergonomics}.
-    \item \textbf{Evaluación biomecánica}: Demuestran que dispositivos ergonómicos bien diseñados pueden reducir significativamente las tensiones en la columna vertebral \cite{johnson2018biomechanics}.
+    \item \textbf{Biomecánica:} Estudio de la interacción entre el cuerpo humano y sistemas mecánicos.
+    \item \textbf{Teoría de Control:} Implementación de sistemas retroalimentados que ajustan el soporte en tiempo real.
+    \item \textbf{Materiales Inteligentes:} Uso de materiales ligeros y con memoria de forma para mejorar funcionalidad.
+    \item \textbf{Ergonomía:} Principios de adaptación al cuerpo humano para minimizar fatiga.
 \end{itemize}
 
-\subsection{Materiales ligeros para exoesqueletos}
-El peso del exoesqueleto es un factor crítico para su aceptación. Los avances en materiales han permitido la creación de dispositivos más ligeros y cómodos \cite{park2019lightweight, nguyen2020visionrobotics}:
+\subsection{Modelos}
+Para diseñar y optimizar exoesqueletos, se utilizan modelos específicos:
 \begin{itemize}
-    \item \textbf{Polímeros avanzados}: Como los compuestos de fibra de carbono, ofrecen alta resistencia con bajo peso.
-    \item \textbf{Aleaciones de aluminio y titanio}: Utilizados para reducir el peso estructural, como en el \textit{HAL} de Cyberdyne \cite{choi2020carbonfiber}.
-    \item \textbf{Textiles inteligentes}: Emplean tejidos con sensores integrados para facilitar la detección de movimientos \cite{nguyen2020visionrobotics}.
+    \item \textbf{Modelo Cinemático de Grúas:} Simula puntos de apoyo y distribución de fuerzas.
+    \item \textbf{Modelos Biomecánicos:} Sincronizan dinámicas corporales con el dispositivo.
+    \item \textbf{Modelos Predictivos con IA:} Algoritmos como redes neuronales para anticipar movimientos y ajustar el soporte.
 \end{itemize}
 
-\subsection{Visión por computadora y detección de objetos}
-La visión por computadora juega un papel fundamental en la automatización de sistemas portátiles. Avances recientes incluyen \cite{redmon2018yolo, patel2021tooldetection}:
+\subsection{Métodos}
+El desarrollo de exoesqueletos implica:
 \begin{itemize}
-    \item \textbf{Detección en tiempo real}: Algoritmos como YOLO y SSD son ampliamente adoptados en aplicaciones industriales.
-    \item \textbf{Reconocimiento de actividad}: Modelos de aprendizaje profundo para identificar tareas específicas realizadas por el usuario.
-    \item \textbf{Sistemas híbridos}: Combinan visión por computadora con sensores hápticos para mejorar la precisión.
+    \item \textbf{Análisis Experimental:} Evaluación en condiciones reales.
+    \item \textbf{Simulaciones Computacionales:} Uso de herramientas como \textit{MATLAB} o \textit{ANSYS}.
+    \item \textbf{Evaluaciones Ergonométricas:} Análisis de comodidad y aceptación del usuario mediante encuestas y sensores.
 \end{itemize}
 
-\subsection{Avances en inteligencia artificial aplicada a exoesqueletos}
-La inteligencia artificial ha transformado la interacción usuario-exoesqueleto \cite{liu2021costanalysis, garcia2020integratedai}:
+\subsection{Metodología}
+El enfoque metodológico incluye:
+\begin{enumerate}
+    \item \textbf{Investigación Exploratoria:} Revisión de literatura sobre tecnologías y limitaciones.
+    \item \textbf{Diseño y Prototipado:} Creación de modelos inspirados en grúas utilizando materiales ligeros.
+    \item \textbf{Validación Experimental:} Estudios de caso en entornos industriales y médicos.
+    \item \textbf{Análisis Cuantitativo:} Recolección y evaluación de datos, como reducción de esfuerzo y eficiencia energética.
+\end{enumerate}
+
+\section*{Estado del Arte}
+
+\subsection*{Exoesqueletos Industriales}
+En el ámbito industrial, los exoesqueletos se utilizan para mitigar el esfuerzo físico durante tareas repetitivas o pesadas. Estudios recientes destacan dispositivos como el \textbf{SuitX} y el \textbf{EksoVest}, diseñados para reducir el estrés en la columna y los miembros superiores. Estas soluciones han demostrado reducir significativamente el riesgo de lesiones musculoesqueléticas y aumentar la productividad en entornos de manufactura y construcción. Sin embargo, aún enfrentan desafíos relacionados con la adaptabilidad y la comodidad del usuario.
+
+\subsection*{Inspiración en Sistemas de Grúas}
+La inspiración en las grúas ha llevado al diseño de exoesqueletos que aprovechan la biomecánica para distribuir el peso de manera eficiente. Esto es particularmente útil en tareas donde se requiere una carga constante y sostenida. Prototipos recientes combinan mecanismos articulados ligeros con sensores inteligentes para optimizar el soporte físico y la movilidad, abordando los problemas de peso y rigidez presentes en modelos más antiguos.
+
+\subsection*{Aplicaciones Médicas y Rehabilitación}
+En el área de salud, los exoesqueletos han sido integrados para apoyar la rehabilitación física. Dispositivos como el \textbf{ReWalk} y el \textbf{Lokomat} han facilitado la recuperación en pacientes con movilidad reducida. Investigaciones actuales incluyen sensores avanzados para monitorear la interacción entre el cuerpo y el dispositivo, mejorando así la personalización del soporte terapéutico.
+
+\subsection*{Inteligencia Artificial en Exoesqueletos}
+La incorporación de inteligencia artificial (IA) ha revolucionado las capacidades de los exoesqueletos. Algoritmos de aprendizaje automático permiten ajustes en tiempo real basados en la actividad del usuario, mientras que tecnologías de visión computacional, como \textbf{YOLO} y \textbf{SSD}, habilitan el reconocimiento de tareas y objetos en tiempo real. Esto mejora la funcionalidad y aumenta la seguridad en el uso del dispositivo.
+
+\subsection*{Limitaciones y Desafíos Actuales}
+A pesar de los avances, persisten barreras importantes:
 \begin{itemize}
-    \item \textbf{Redes neuronales}: Modelos que anticipan movimientos del usuario para proporcionar soporte en tiempo real.
-    \item \textbf{Control adaptable}: Ajustan el nivel de asistencia basado en las condiciones de carga y las necesidades específicas del usuario.
+    \item \textbf{Costo elevado:} Los dispositivos siguen siendo inaccesibles para muchas empresas y usuarios individuales.
+    \item \textbf{Autonomía limitada:} La duración de la batería restringe el tiempo de uso continuo.
+    \item \textbf{Diseño no inclusivo:} Falta de adaptabilidad a diversos tipos de cuerpo y condiciones de trabajo.
 \end{itemize}
 
-\section{Limitaciones y áreas de oportunidad}
-A pesar de los avances, persisten desafíos como altos costos y diseños no inclusivos, así como la falta de integración de tecnologías ligeras y avanzadas. Los próximos desarrollos deben abordar estos desafíos para lograr una adopción más amplia.
+\subsection*{Innovaciones Recientes}
+\begin{itemize}
+    \item \textbf{Materiales ligeros y resistentes:} El uso de compuestos avanzados ha permitido la creación de dispositivos más livianos sin sacrificar la durabilidad.
+    \item \textbf{Diseños modulares:} Facilitan la personalización y mantenimiento, aumentando la versatilidad en aplicaciones industriales y médicas.
+    \item \textbf{Interfaces amigables:} La integración de controles intuitivos ha mejorado la experiencia del usuario y su adopción generalizada.
+\end{itemize}

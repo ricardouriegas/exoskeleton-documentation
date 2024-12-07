@@ -1,0 +1,57 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// Declarar los pines en el Arduino}
+\PYG{k}{const}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{PinIN1}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{5}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Pin digital 5}
+\PYG{k}{const}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{PinIN2}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{4}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Pin digital 4}
+
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{setup}\PYG{p}{()}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{c+c1}{// Inicializar la comunicación serial a 9600 baudios}
+\PYG{+w}{  }\PYG{n}{Serial}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(}\PYG{l+m+mi}{9600}\PYG{p}{);}
+
+\PYG{+w}{  }\PYG{c+c1}{// Configuramos los pines como salida}
+\PYG{+w}{  }\PYG{n}{pinMode}\PYG{p}{(}\PYG{n}{PinIN1}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{OUTPUT}\PYG{p}{);}
+\PYG{+w}{  }\PYG{n}{pinMode}\PYG{p}{(}\PYG{n}{PinIN2}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{OUTPUT}\PYG{p}{);}
+
+\PYG{+w}{  }\PYG{c+c1}{// Apagar el motor al inicio}
+\PYG{+w}{  }\PYG{n}{digitalWrite}\PYG{p}{(}\PYG{n}{PinIN1}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{LOW}\PYG{p}{);}
+\PYG{+w}{  }\PYG{n}{digitalWrite}\PYG{p}{(}\PYG{n}{PinIN2}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{LOW}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{loop}\PYG{p}{()}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{c+c1}{// Verificar si hay datos disponibles en el puerto serial}
+\PYG{+w}{  }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{Serial}\PYG{p}{.}\PYG{n}{available}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{c+c1}{// Leer el comando enviado desde la Raspberry Pi}
+\PYG{+w}{    }\PYG{n}{String}\PYG{+w}{ }\PYG{n}{command}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Serial}\PYG{p}{.}\PYG{n}{readStringUntil}\PYG{p}{(}\PYG{l+s+sc}{\PYGZsq{}\PYGZbs{}n\PYGZsq{}}\PYG{p}{);}\PYG{+w}{ }\PYG{c+c1}{// Leer hasta un salto de línea}
+\PYG{+w}{    }\PYG{n}{command}\PYG{p}{.}\PYG{n}{trim}\PYG{p}{();}\PYG{+w}{ }\PYG{c+c1}{// Eliminar espacios o caracteres innecesarios}
+
+\PYG{+w}{    }\PYG{c+c1}{// Verificar el comando recibido y ejecutar la acción correspondiente}
+\PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{command}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}1\PYGZdq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{      }\PYG{n}{MotorHorario}\PYG{p}{();}
+\PYG{+w}{      }\PYG{n}{Serial}\PYG{p}{.}\PYG{n}{println}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Motor retraído (girando en sentido horario)\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{else}\PYG{+w}{ }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{command}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}2\PYGZdq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{      }\PYG{n}{MotorAntihorario}\PYG{p}{();}
+\PYG{+w}{      }\PYG{n}{Serial}\PYG{p}{.}\PYG{n}{println}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Motor soltando (girando en sentido antihorario)\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{else}\PYG{+w}{ }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{command}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}0\PYGZdq{}}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{command}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZhy{}1\PYGZdq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{      }\PYG{n}{PararMotor}\PYG{p}{();}
+\PYG{+w}{      }\PYG{n}{Serial}\PYG{p}{.}\PYG{n}{println}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Motor detenido\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{  }\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{c+c1}{// Función para girar el motor en sentido horario (retraer)}
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{MotorHorario}\PYG{p}{()}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{n}{digitalWrite}\PYG{p}{(}\PYG{n}{PinIN1}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{HIGH}\PYG{p}{);}
+\PYG{+w}{  }\PYG{n}{digitalWrite}\PYG{p}{(}\PYG{n}{PinIN2}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{LOW}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{c+c1}{// Función para girar el motor en sentido antihorario (soltar)}
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{MotorAntihorario}\PYG{p}{()}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{n}{digitalWrite}\PYG{p}{(}\PYG{n}{PinIN1}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{LOW}\PYG{p}{);}
+\PYG{+w}{  }\PYG{n}{digitalWrite}\PYG{p}{(}\PYG{n}{PinIN2}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{HIGH}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{c+c1}{// Función para detener el motor}
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{PararMotor}\PYG{p}{()}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{n}{digitalWrite}\PYG{p}{(}\PYG{n}{PinIN1}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{LOW}\PYG{p}{);}
+\PYG{+w}{  }\PYG{n}{digitalWrite}\PYG{p}{(}\PYG{n}{PinIN2}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{LOW}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

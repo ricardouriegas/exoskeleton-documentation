@@ -1,0 +1,94 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{cv2}
+\PYG{k+kn}{import} \PYG{n+nn}{mediapipe} \PYG{k}{as} \PYG{n+nn}{mp}
+\PYG{k+kn}{import} \PYG{n+nn}{serial}
+
+\PYG{c+c1}{\PYGZsh{} Configuración del puerto serial}
+\PYG{c+c1}{\PYGZsh{} arduino = serial.Serial(\PYGZsq{}/dev/ttyUSB0\PYGZsq{}, 9600, timeout=1)  \PYGZsh{} Ajusta el puerto si es necesario}
+
+\PYG{c+c1}{\PYGZsh{} Inicializa MediaPipe Hands}
+\PYG{n}{mp\PYGZus{}hands} \PYG{o}{=} \PYG{n}{mp}\PYG{o}{.}\PYG{n}{solutions}\PYG{o}{.}\PYG{n}{hands}
+\PYG{n}{mp\PYGZus{}drawing} \PYG{o}{=} \PYG{n}{mp}\PYG{o}{.}\PYG{n}{solutions}\PYG{o}{.}\PYG{n}{drawing\PYGZus{}utils}
+\PYG{n}{hands} \PYG{o}{=} \PYG{n}{mp\PYGZus{}hands}\PYG{o}{.}\PYG{n}{Hands}\PYG{p}{(}\PYG{n}{static\PYGZus{}image\PYGZus{}mode}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{,}
+                       \PYG{n}{max\PYGZus{}num\PYGZus{}hands}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{,}
+                       \PYG{n}{min\PYGZus{}detection\PYGZus{}confidence}\PYG{o}{=}\PYG{l+m+mf}{0.5}\PYG{p}{,}
+                       \PYG{n}{min\PYGZus{}tracking\PYGZus{}confidence}\PYG{o}{=}\PYG{l+m+mf}{0.5}\PYG{p}{)}
+
+\PYG{k}{def} \PYG{n+nf}{is\PYGZus{}hand\PYGZus{}open}\PYG{p}{(}\PYG{n}{landmarks}\PYG{p}{):}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+sd}{    Determina si la mano está abierta o cerrada basándose en los puntos clave.}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{tip\PYGZus{}ids} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{8}\PYG{p}{,} \PYG{l+m+mi}{12}\PYG{p}{,} \PYG{l+m+mi}{16}\PYG{p}{,} \PYG{l+m+mi}{20}\PYG{p}{]}
+    \PYG{n}{open\PYGZus{}fingers} \PYG{o}{=} \PYG{l+m+mi}{0}
+
+    \PYG{c+c1}{\PYGZsh{} Pulgar}
+    \PYG{k}{if} \PYG{n}{landmarks}\PYG{p}{[}\PYG{n}{tip\PYGZus{}ids}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]]}\PYG{o}{.}\PYG{n}{x} \PYG{o}{\PYGZlt{}} \PYG{n}{landmarks}\PYG{p}{[}\PYG{n}{tip\PYGZus{}ids}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{.}\PYG{n}{x}\PYG{p}{:}  \PYG{c+c1}{\PYGZsh{} Mano derecha}
+        \PYG{n}{open\PYGZus{}fingers} \PYG{o}{+=} \PYG{l+m+mi}{1}
+
+    \PYG{c+c1}{\PYGZsh{} Otros dedos}
+    \PYG{k}{for} \PYG{n}{tip\PYGZus{}id} \PYG{o+ow}{in} \PYG{n}{tip\PYGZus{}ids}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{:]:}
+        \PYG{k}{if} \PYG{n}{landmarks}\PYG{p}{[}\PYG{n}{tip\PYGZus{}id}\PYG{p}{]}\PYG{o}{.}\PYG{n}{y} \PYG{o}{\PYGZlt{}} \PYG{n}{landmarks}\PYG{p}{[}\PYG{n}{tip\PYGZus{}id} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{2}\PYG{p}{]}\PYG{o}{.}\PYG{n}{y}\PYG{p}{:}  \PYG{c+c1}{\PYGZsh{} Yema más arriba que la articulación}
+            \PYG{n}{open\PYGZus{}fingers} \PYG{o}{+=} \PYG{l+m+mi}{1}
+
+    \PYG{k}{return} \PYG{n}{open\PYGZus{}fingers} \PYG{o}{\PYGZgt{}=} \PYG{l+m+mi}{4}  \PYG{c+c1}{\PYGZsh{} Mano abierta si al menos 4 dedos están extendidos}
+
+\PYG{c+c1}{\PYGZsh{} Captura de video}
+\PYG{n}{cap} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoCapture}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}/dev/video0\PYGZsq{}}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{CAP\PYGZus{}V4L2}\PYG{p}{)}
+
+\PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{cap}\PYG{o}{.}\PYG{n}{isOpened}\PYG{p}{():}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}No se pudo abrir la cámara.\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{exit}\PYG{p}{()}
+
+\PYG{c+c1}{\PYGZsh{} Estado inicial}
+\PYG{n}{previous\PYGZus{}hand\PYGZus{}detected} \PYG{o}{=} \PYG{k+kc}{False}  \PYG{c+c1}{\PYGZsh{} Estado anterior inicial (ninguna mano detectada)}
+\PYG{n}{stable\PYGZus{}iterations\PYGZus{}required} \PYG{o}{=} \PYG{l+m+mi}{5}  \PYG{c+c1}{\PYGZsh{} Iteraciones consecutivas necesarias para confirmar un cambio}
+\PYG{n}{current\PYGZus{}stable\PYGZus{}iterations} \PYG{o}{=} \PYG{l+m+mi}{0}  \PYG{c+c1}{\PYGZsh{} Contador de iteraciones consecutivas estables}
+\PYG{n}{current\PYGZus{}state} \PYG{o}{=} \PYG{k+kc}{False}  \PYG{c+c1}{\PYGZsh{} Estado actual confirmado}
+
+\PYG{k}{while} \PYG{k+kc}{True}\PYG{p}{:}
+    \PYG{n}{ret}\PYG{p}{,} \PYG{n}{frame} \PYG{o}{=} \PYG{n}{cap}\PYG{o}{.}\PYG{n}{read}\PYG{p}{()}
+    \PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{ret}\PYG{p}{:}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}No se pudo capturar el frame.\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{break}
+
+    \PYG{c+c1}{\PYGZsh{} Convierte a RGB para MediaPipe}
+    \PYG{n}{rgb\PYGZus{}frame} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}BGR2RGB}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} Procesa la imagen para detectar manos}
+    \PYG{n}{result} \PYG{o}{=} \PYG{n}{hands}\PYG{o}{.}\PYG{n}{process}\PYG{p}{(}\PYG{n}{rgb\PYGZus{}frame}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} Determina si se detectan manos en el cuadro actual}
+    \PYG{n}{current\PYGZus{}hand\PYGZus{}detected} \PYG{o}{=} \PYG{n}{result}\PYG{o}{.}\PYG{n}{multi\PYGZus{}hand\PYGZus{}landmarks} \PYG{o+ow}{is} \PYG{o+ow}{not} \PYG{k+kc}{None}
+
+    \PYG{c+c1}{\PYGZsh{} Incrementa o reinicia el contador según el estado detectado}
+    \PYG{k}{if} \PYG{n}{current\PYGZus{}hand\PYGZus{}detected} \PYG{o}{==} \PYG{n}{previous\PYGZus{}hand\PYGZus{}detected}\PYG{p}{:}
+        \PYG{n}{current\PYGZus{}stable\PYGZus{}iterations} \PYG{o}{+=} \PYG{l+m+mi}{1}
+    \PYG{k}{else}\PYG{p}{:}
+        \PYG{n}{current\PYGZus{}stable\PYGZus{}iterations} \PYG{o}{=} \PYG{l+m+mi}{0}
+        \PYG{n}{previous\PYGZus{}hand\PYGZus{}detected} \PYG{o}{=} \PYG{n}{current\PYGZus{}hand\PYGZus{}detected}
+
+    \PYG{c+c1}{\PYGZsh{} Verifica si el estado ha sido estable durante las iteraciones necesarias}
+    \PYG{k}{if} \PYG{n}{current\PYGZus{}stable\PYGZus{}iterations} \PYG{o}{\PYGZgt{}=} \PYG{n}{stable\PYGZus{}iterations\PYGZus{}required} \PYG{o+ow}{and} \PYG{n}{current\PYGZus{}hand\PYGZus{}detected} \PYG{o}{!=} \PYG{n}{current\PYGZus{}state}\PYG{p}{:}
+        \PYG{n}{current\PYGZus{}state} \PYG{o}{=} \PYG{n}{current\PYGZus{}hand\PYGZus{}detected}
+        \PYG{k}{if} \PYG{n}{current\PYGZus{}hand\PYGZus{}detected}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Se detecta una mano \PYGZhy{} Soltar el motor\PYGZdq{}}\PYG{p}{)}
+            \PYG{c+c1}{\PYGZsh{} arduino.write(b\PYGZsq{}RELEASE\PYGZbs{}n\PYGZsq{})  \PYGZsh{} Enviar comando para soltar el motor}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}No se detecta ninguna mano \PYGZhy{} Retraer el motor\PYGZdq{}}\PYG{p}{)}
+            \PYG{c+c1}{\PYGZsh{} arduino.write(b\PYGZsq{}RETRACT\PYGZbs{}n\PYGZsq{})  \PYGZsh{} Enviar comando para retraer el motor}
+
+    \PYG{c+c1}{\PYGZsh{} Dibuja las manos detectadas en el marco}
+    \PYG{k}{if} \PYG{n}{result}\PYG{o}{.}\PYG{n}{multi\PYGZus{}hand\PYGZus{}landmarks}\PYG{p}{:}
+        \PYG{k}{for} \PYG{n}{hand\PYGZus{}landmarks} \PYG{o+ow}{in} \PYG{n}{result}\PYG{o}{.}\PYG{n}{multi\PYGZus{}hand\PYGZus{}landmarks}\PYG{p}{:}
+            \PYG{n}{mp\PYGZus{}drawing}\PYG{o}{.}\PYG{n}{draw\PYGZus{}landmarks}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{,} \PYG{n}{hand\PYGZus{}landmarks}\PYG{p}{,} \PYG{n}{mp\PYGZus{}hands}\PYG{o}{.}\PYG{n}{HAND\PYGZus{}CONNECTIONS}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} Muestra el video con los resultados}
+    \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Video en tiempo real\PYGZdq{}}\PYG{p}{,} \PYG{n}{frame}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} Presiona \PYGZsq{}q\PYGZsq{} para salir}
+    \PYG{k}{if} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{waitKey}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{\PYGZam{}} \PYG{l+m+mh}{0xFF} \PYG{o}{==} \PYG{n+nb}{ord}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}q\PYGZsq{}}\PYG{p}{):}
+        \PYG{k}{break}
+
+\PYG{n}{cap}\PYG{o}{.}\PYG{n}{release}\PYG{p}{()}
+\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{destroyAllWindows}\PYG{p}{()}
+\end{Verbatim}
